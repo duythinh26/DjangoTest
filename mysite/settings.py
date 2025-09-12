@@ -31,6 +31,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    # Include the Polls app by adding the following line:
     "polls.apps.PollsConfig",
     'django.contrib.admin',
     'django.contrib.auth',
