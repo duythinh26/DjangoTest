@@ -4,7 +4,8 @@
     {% comment %} 
         Because we defined the 'detail' view in polls/urls.py with the name 'detail', we can use the URL template tag to create a link to the detail page for each question. This is better than hardcoding the URL, as it keeps our templates flexible and maintainable.
     {% endcomment %}
-        <li><a href="{% url 'detail' question.id %}">{{ question.question_text }}</a></li>
+    <li><a href="{% url 'polls:detail' question.id %}">{{ question.question_text }}</a></li>
+
     {% endfor %}
     </ul>
 {% else %}
