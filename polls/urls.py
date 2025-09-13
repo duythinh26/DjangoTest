@@ -12,7 +12,8 @@ urlpatterns = [
     # name="index" gives the URL pattern a name that can be used for reverse URL
     path("", views.index, name="index"), # ex: /polls/
     
-    path("specifics/<int:question_id>/", views.detail, name="detail"), # ex: /polls/5/
+    # the 'name' value as called by the {% url %} template tag
+    path("<int:question_id>/", views.detail, name="detail"), # ex: /polls/5/
     
     path("<int:question_id>/results/", views.results, name="results"), # ex: /polls/5/results/
     
