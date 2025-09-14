@@ -2,6 +2,7 @@
 # Each view is represented by a Python function
 # To get from a URL to a view, Django uses what are known as ‘URLconfs’. A URLconf maps URL patterns to views.
 
+from django.utils import timezone
 from django.db.models import F
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render
@@ -13,19 +14,32 @@ from .models import Choice, Question
 
 # Each view function takes at least one argument, typically a request argument.
 # Each view is responsible for doing one of two things: returning an HttpResponse object containing the content for the requested page, or raising an exception such as Http404
+
+# Using class-based views instead of function-based views to make code cleaner and more reusable
 class IndexView(generic.ListView):
     # Using template_name to specify the template to use
     template_name = "polls/index.html"
     context_object_name = "latest_question_list"
 
     def get_queryset(self):
-        """Return the last five published questions."""
-        return Question.objects.order_by("-pub_date")[:5]
+        """
+        Return the last five published questions (not including those set to be
+        published in the future).
+        """
+        return Question.objects.filter(pub_date__lte=timezone.now()).order_by("-pub_date")[
+            :5
+        ]
 
 
 class DetailView(generic.DetailView):
     model = Question
     template_name = "polls/detail.html"
+    
+    def get_queryset(self):
+        """
+        Excludes any questions that aren't published yet.
+        """
+        return Question.objects.filter(pub_date__lte=timezone.now())
 
 
 class ResultsView(generic.DetailView):
